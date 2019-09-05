@@ -1,0 +1,54 @@
+params:
+    test_case: True
+    full_matrix: True
+    guest_name: 'vm1'
+    guest_xml: 'guest.xml'
+    mist_rules: 'split'
+    max_cases: 30
+    drop_env: 10
+
+case:
+    - name: test vm migration
+      params:
+        target_host: <target hostname or ip>
+        restart_libvirtd: True
+        extra_check: True
+      params_matrix:
+        libvirtd_protocol:
+          - 'ssh'
+          - 'tls' // Default setting in RHV
+          - 'tcp'
+        migrate_params:
+          live:
+            - ' --live' //live migration
+            - ' --offline' //offline migration
+            - '' //non-live migration
+          managed:
+            - ' --p2p' // used by RHV, RHOS
+            - ' --direct' //Not supported by qemu
+            - ''
+          native:
+            - '' //hypervisor native transport, mostly used
+            - ' --tunnelled' //libvirt tunnelled transport
+          native_tls:
+            - ' --tls' //use native TLS for migration
+            - ''
+          src_vm_config:
+            - ' --undefinesource' //undefine vm on src host after migration
+            - '' //keep vm config on src host after migration
+          target_vm_config:
+            - ' --persistent' //make target vm persisent after migration
+            - ''
+          target_vm_xml:
+            - ' --xml new.xml' // Change vm defination on target host
+            - ''
+      test_objs:
+        - migration-1.migrate
+      modules:
+        - migration-1
+        - vm_basic
+        - mem_test
+      doc-modules:
+        - migration-1_doc
+        - vm_basic_doc
+        - mem_test_doc
