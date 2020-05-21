@@ -18,7 +18,7 @@ case:
           - 'ssh'
           - 'tls' // Default setting in RHV
           - 'tcp'
-        migrate_params:
+        migrate_options:
           live:
             - ' --live' //live migration
             - ' --offline' //offline migration
