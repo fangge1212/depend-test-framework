@@ -16,9 +16,33 @@ def managedsave_guest(params, env):
     params.doc_logger.info(STEPS + "# virsh managedsave %s" % params.guest_name)
     params.doc_logger.info(RESULT + "Domain %s state saved by libvirt" % params.guest_name)
 
+
+def check_managedsave_guest(params, env):
+    """
+    Checkpoints after guest is managedsaved
+    """
+    params.doc_logger.info(STEPS + "# virsh domstate --reason %s" % params.guest_name) 
+    params.doc_logger.info(RESULT + "shut off (saved)")
+
+
 def restore_guest_from_managedsaved(params, env):
     """
     Restore guest from managedsave state
     """
     params.doc_logger.info(STEPS + "# virsh start %s" % params.guest_name) 
     params.doc_logger.info(RESULT + "Domain %s started" % params.guest_name)
+
+
+def check_restore_guest(params, env):
+    """
+    Checkpoints after guest is restored from managedsave
+    """
+    params.doc_logger.info(STEPS + "# virsh domstate --reason %s" % params.guest_name) 
+    params.doc_logger.info(RESULT + "running (restored)")
+
+
+def remove_managedsave_file(params, env):
+    """
+    Remove managedsave file
+    """
+    pass
